@@ -1,562 +1,471 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ملف الإنجاز الإلكتروني - فراس محمد موسى العسيري</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>نظام التحقق من شهادات التطعيم</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #007BFF; /* لون رئيسي جديد (أزرق) */
-            --secondary: #6C757D; /* لون ثانوي جديد (رمادي) */
-            --accent: #28a745;
-            --light: #f8f9fa; /* لون فاتح متناسق */
-            --dark: #212529;
-            --gray: #6c757d;
-            --border-radius: 15px; /* مربعات أنعم */
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-        }
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
         }
-
+        
         body {
-            background: #f8f9fa;
-            color: var(--dark);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 25px;
-            direction: rtl;
+            font-family: 'Cairo', Tahoma, Arial, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
         }
-
-        .container {
-            width: 100%;
-            max-width: 1200px; /* تعديل العرض */
+        
+        .header-container {
             background-color: white;
-            border-radius: 25px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            height: 95vh;
-            position: relative;
-        }
-
-        /* Main View */
-        .main-view {
-            padding: 35px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.6s ease, opacity 0.6s ease;
-        }
-
-        .main-view.hidden {
-            transform: translateX(-100%);
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            pointer-events: none;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 35px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .profile-info {
-            flex: 1;
-        }
-
-        .profile-info h1 {
-            font-size: 2.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .profile-info .title {
-            font-size: 1.2rem;
-            color: var(--gray);
-            margin-bottom: 20px;
-        }
-
-        .contact-badges {
-            display: flex;
-            gap: 12px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-        }
-
-        .contact-badge {
-            background: var(--light);
-            padding: 10px 18px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1rem;
-            color: var(--dark);
-            text-decoration: none;
-            transition: all 0.4s;
-            border: 1px solid #dee2e6;
-        }
-
-        .contact-badge:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-4px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 10px 0;
         }
         
-        .contact-badge i {
-            color: var(--primary);
-            transition: color 0.4s;
-        }
-
-        .contact-badge:hover i {
-            color: white;
-        }
-
-        /* Compact Data Grid */
-        .data-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* حجم أكبر قليلاً */
-            gap: 20px; /* مسافات أكبر */
-            flex-grow: 1;
-            padding-top: 15px;
-        }
-
-        .data-box {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 20px 18px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
-            cursor: pointer;
-            transition: all 0.4s ease;
+        .logo-container {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
+            padding: 0 15px;
+        }
+        
+        .moh-logo {
+            height: 70px;
+            max-width: 100%;
+        }
+        
+        .green-line {
+            background-color: #306DB5;
+            color: white;
             text-align: center;
-            border: 1px solid #e9ecef;
-            position: relative;
-            overflow: hidden;
+            padding: 5px 0;
+            font-weight: bold;
+            margin-top: 15px;
         }
         
-        .data-box:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
-            border-color: var(--primary);
-        }
-
-        .data-box i {
-            font-size: 2rem; /* أيقونة أكبر */
-            margin-bottom: 12px;
-            color: var(--primary);
-            transition: all 0.4s;
+        .container {
+            max-width: 100%;
+            padding: 0 15px;
         }
         
-        .data-box:hover i {
-            transform: scale(1.15);
+        .l-section {
+            background-color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
-        .data-box h3 {
-            font-size: 1.1rem; /* خط أكبر */
-            margin-bottom: 6px;
+        
+        .l-title {
+            color: #306DB5;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 15px;
         }
-
-        .data-box p {
-            color: var(--gray);
-            font-size: 0.8rem; /* خط أكبر قليلاً */
-            line-height: 1.5;
-        }
-
-        /* Detail Views */
-        .detail-view {
-            position: absolute;
-            top: 0;
-            left: 0;
+        
+        .l-txt {
             width: 100%;
-            height: 100%;
-            padding: 45px;
-            background: white;
-            transform: translateX(100%);
-            opacity: 0;
-            transition: transform 0.6s ease, opacity 0.6s ease;
-            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 16px;
         }
-
-        .detail-view.active {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .back-button {
-            background: var(--gradient);
+        
+        .l-btn {
+            background-color: #306DB5;
             color: white;
             border: none;
-            padding: 14px 28px;
-            border-radius: 50px;
+            padding: 12px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 1.1rem;
-            margin-bottom: 35px;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.4s;
-            box-shadow: 0 6px 18px rgba(0, 123, 255, 0.3);
-        }
-
-        .back-button:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.4);
-        }
-
-        .detail-content h2 {
-            color: var(--primary);
-            margin-bottom: 30px;
-            font-size: 2.2rem;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-        
-        .detail-content h2 i {
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .detail-content p {
-            margin-bottom: 25px;
-            font-size: 1.2rem;
-            line-height: 1.9;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 18px;
-            margin-top: 25px;
-        }
-
-        .skill-item {
-            background: var(--light);
-            padding: 18px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: transform 0.4s;
-            border-left: 4px solid var(--primary);
-        }
-
-        .skill-item:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-        }
-
-        .skill-item i {
-            color: var(--primary);
-            font-size: 1.5rem;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .gallery-item img {
             width: 100%;
-            height: auto;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: transform 0.4s;
-            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 10px;
         }
         
-        .gallery-item img:hover {
-            transform: scale(1.08);
+        .l-btn:hover {
+            background-color: #2a5d9e;
         }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            margin-top: 25px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            padding: 18px;
-            background: var(--light);
-            border-radius: var(--border-radius);
-            transition: transform 0.4s;
-        }
-
-        .contact-item:hover {
-            transform: translateX(12px);
-        }
-
-        .contact-item i {
-            width: 55px;
-            height: 55px;
-            background: var(--gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        
+        .footer-container {
+            background-color: #306DB5;
             color: white;
-            font-size: 1.5rem;
+            padding: 30px 15px;
+            margin-top: 50px;
         }
-
-        .contact-item a {
-            color: var(--dark);
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: color 0.4s;
+        
+        .nav-tabs {
+            border-bottom: 2px solid #306DB5;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
         }
-
-        .contact-item a:hover {
-            color: var(--primary);
+        
+        .nav-tabs .nav-link {
+            color: #555;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
         }
-
-        .cv-image {
+        
+        .nav-tabs .nav-link.active {
+            color: #306DB5 !important;
+            background-color: transparent;
+            border-bottom: 3px solid #306DB5;
+        }
+        
+        .result-section {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .certificate-box {
+            border: 2px solid #306DB5;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-bottom: 30px;
+        }
+        
+        .vaccine-table {
             width: 100%;
-            max-width: 850px;
-            border-radius: 12px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-            margin: 25px auto;
-            display: block;
-            border: 1px solid #dee2e6;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
         }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .contact-badges {
-                justify-content: center;
-            }
+        
+        .vaccine-table th {
+            background-color: #306DB5;
+            color: white;
+            padding: 10px;
+            text-align: center;
         }
-
+        
+        .vaccine-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        .vaccine-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .text-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .text-danger {
+            color: #dc3545;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .edit-btn {
+            background-color: #ffc107;
+            color: #212529;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .print-btn {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
         @media (max-width: 768px) {
-            .container {
-                height: auto;
-                min-height: 95vh;
+            .moh-logo {
+                height: 50px;
             }
-            .main-view, .detail-view {
-                padding: 25px;
+            
+            .nav-tabs .nav-link {
+                padding: 8px 12px;
+                font-size: 14px;
             }
-            .data-grid {
-                grid-template-columns: repeat(2, 1fr);
+            
+            .l-section {
+                padding: 15px;
+            }
+            
+            .certificate-box {
+                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Main View -->
-        <div id="main-view" class="main-view">
-            <div class="profile-header">
-                <div class="profile-info">
-                    <h1>فراس محمد موسى العسيري</h1>
-                    <p class="title">طالب دبلوم موارد بشرية – جامعة أم القرى</p>
-                    <div class="contact-badges">
-                        <a href="mailto:frtal667t@gmail.com" class="contact-badge">
-                            <i class="fas fa-envelope"></i> البريد الإلكتروني
-                        </a>
-                        <a href="tel:+966500213173" class="contact-badge">
-                            <i class="fas fa-phone"></i> رقم الهاتف
-                        </a>
-                        <a href="https://www.linkedin.com/in/feras-alasiri-3ab45638a?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="contact-badge">
-                            <i class="fab fa-linkedin"></i> LinkedIn
-                        </a>
+    <header class="header-container">
+        <div class="container">
+            <div class="logo-container">
+                <img src="https://vaccinecertificate.sehhaty.sa/Content/Images/sehanewlogo.png" class="moh-logo" alt="شعار منصة صحة">
+            </div>
+            <div class="green-line">
+                خدمة الاستعلام عن الشهادات الخاصة بالتطعيمات
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4">
+        <ul class="nav nav-tabs" id="certTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab">الاستعلام عن جميع الشهادات</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="hajj-tab" data-bs-toggle="tab" data-bs-target="#hajj" type="button" role="tab">الاستعلام عن شهادة الحج</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="certTabContent">
+            <!-- تبويب جميع الشهادات -->
+            <div class="tab-pane fade show active" id="all" role="tabpanel">
+                <div class="l-section">
+                    <h5 class="l-title">التحقق من صحة الشهادة</h5>
+                    <p style="color:#306DB5; text-align:center;">
+                        خدمة الاستعلام عن الشهادات الخاصة بالتطعيمات تتيح امكانية التحقق من صحة البيانات الواردة في الشهادة
+                    </p>
+                    
+                    <form id="certificateForm">
+                        <div class="mb-3">
+                            <label for="certificateNumber" class="form-label">رقم الشهادة</label>
+                            <input type="text" class="form-control l-txt" id="certificateNumber" placeholder="أدخل رقم الشهادة المكون من 15 رقم" maxlength="15">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="idNumber" class="form-label">رقم الهوية</label>
+                            <input type="text" class="form-control l-txt" id="idNumber" placeholder="أدخل رقم الهوية / الإقامة" maxlength="10">
+                        </div>
+                        
+                        <button type="button" class="btn l-btn" onclick="verifyCertificate()">تحقق</button>
+                    </form>
+                </div>
+                
+                <!-- نتائج التحقق -->
+                <div class="result-section" id="certificateResult">
+                    <div class="l-section">
+                        <h5 class="l-title">نتيجة التحقق</h5>
+                        <div class="certificate-box">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>اسم الحاصل على الشهادة:</strong> <span id="certName">...</span></p>
+                                    <p><strong>رقم الهوية:</strong> <span id="certId">...</span></p>
+                                    <p><strong>تاريخ الميلاد:</strong> <span id="certDob">...</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>نوع الشهادة:</strong> <span id="certType">...</span></p>
+                                    <p><strong>حالة الشهادة:</strong> <span id="certStatus">...</span></p>
+                                    <p><strong>تاريخ الإصدار:</strong> <span id="certIssueDate">...</span></p>
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            
+                            <h6 style="text-align:center; margin-bottom:20px;">تفاصيل التطعيمات:</h6>
+                            <div class="table-responsive">
+                                <table class="vaccine-table">
+                                    <thead>
+                                        <tr>
+                                            <th>نوع اللقاح</th>
+                                            <th>الجرعة</th>
+                                            <th>تاريخ التطعيم</th>
+                                            <th>الجهة المانحة</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="vaccineDetails">
+                                        <!-- سيتم ملؤها بالبيانات -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="edit-btn" onclick="editCertificate()"><i class="fas fa-edit"></i> تعديل البيانات</button>
+                                <button class="print-btn" onclick="printCertificate()"><i class="fas fa-print"></i> طباعة</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="data-grid">
-                <div class="data-box" data-target="about">
-                    <i class="fas fa-user-tie"></i>
-                    <h3>النبذة التعريفية</h3>
-                    <p>خبراتي وأهدافي المهنية</p>
+            <!-- تبويب شهادة الحج -->
+            <div class="tab-pane fade" id="hajj" role="tabpanel">
+                <div class="l-section">
+                    <h5 class="l-title">التحقق من شهادة تطعيم الحج</h5>
+                    <p style="text-align:center;">
+                        خدمة الاستعلام عن شهادات تطعيم الحج تتيح امكانية التحقق من صحة البيانات الواردة في الشهادة
+                    </p>
+                    
+                    <form id="hajjForm">
+                        <div class="mb-3">
+                            <label for="hajjIdNumber" class="form-label">رقم الهوية</label>
+                            <input type="text" class="form-control l-txt" id="hajjIdNumber" placeholder="أدخل رقم الهوية / الإقامة">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="hijriDob" class="form-label">تاريخ الميلاد (هجري)</label>
+                            <input type="text" class="form-control l-txt" id="hijriDob" placeholder="يوم/شهر/سنة">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="gregorianDob" class="form-label">تاريخ الميلاد (ميلادي)</label>
+                            <input type="text" class="form-control l-txt" id="gregorianDob" placeholder="يوم/شهر/سنة">
+                        </div>
+                        
+                        <button type="button" class="btn l-btn" onclick="verifyHajjCertificate()">تحقق</button>
+                    </form>
                 </div>
-                <div class="data-box" data-target="cv">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>السيرة الذاتية</h3>
-                    <p>عرض السيرة الذاتية الكاملة</p>
-                </div>
-                <div class="data-box" data-target="skills">
-                    <i class="fas fa-cogs"></i>
-                    <h3>المهارات</h3>
-                    <p>مهاراتي الشخصية والعملية</p>
-                </div>
-                <div class="data-box" data-target="projects">
-                    <i class="fas fa-briefcase"></i>
-                    <h3>المشاريع والأعمال</h3>
-                    <p>نماذج من أعمالي</p>
-                </div>
-                <div class="data-box" data-target="certificates">
-                    <i class="fas fa-certificate"></i>
-                    <h3>الشهادات والدورات</h3>
-                    <p>الدورات التدريبية التي حصلت عليها</p>
-                </div>
-                <div class="data-box" data-target="contact">
-                    <i class="fas fa-address-book"></i>
-                    <h3>معلومات التواصل</h3>
-                    <p>طرق التواصل معي</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Detail Views -->
-        
-        <!-- About Section -->
-        <div id="about" class="detail-view">
-            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
-            <div class="detail-content">
-                <h2><i class="fas fa-user-tie"></i> نبذة تعريفية</h2>
-                <p>فراس محمد موسى العسيري، طالب تخصص الموارد البشرية، مهتم بالعمل في مجال شؤون الموظفين والعمل الجماعي، وأسعى لتطوير مهاراتي في تنظيم العلاقات العمالية وتعزيز بيئة عمل قائمة على التعاون والالتزام المهني. طالب بجامعة أم القرى تخصص إدارة موارد بشرية، مهتم بالعمل في شؤون الموظفين والعمل النقابي، وأسعى لاكتساب خبرة عملية وتطوير مهاراتي بما يخدم بيئة العمل ويعزز التعاون والانضباط الوظيفي. العمر: ٢٠ سنة، الحالة الاجتماعية: أعزب.</p>
-            </div>
-        </div>
-        
-        <!-- CV Section -->
-        <div id="cv" class="detail-view">
-            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
-            <div class="detail-content">
-                <h2><i class="fas fa-file-alt"></i> السيرة الذاتية (CV)</h2>
-                <p>يمكنك الاطلاع على سيرتي الذاتية من خلال الصورة أدناه.</p>
-                <a href="https://i.postimg.cc/hG1nHwpT/Screenshot-20251208-203025-740.png" target="_blank">
-                    <img src="https://i.postimg.cc/hG1nHwpT/Screenshot-20251208-203025-740.png" alt="السيرة الذاتية" class="cv-image">
-                </a>
-            </div>
-        </div>
-
-        <!-- Skills Section -->
-        <div id="skills" class="detail-view">
-            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
-            <div class="detail-content">
-                <h2><i class="fas fa-cogs"></i> المهارات</h2>
-                <div class="skills-grid">
-                    <div class="skill-item"><i class="fas fa-users-cog"></i><span>إدارة شؤون الموظفين وسياسات الموارد البشرية</span></div>
-                    <div class="skill-item"><i class="fas fa-file-excel"></i><span>إعداد التقارير الإدارية والملفات الوظيفية</span></div>
-                    <div class="skill-item"><i class="fas fa-users"></i><span>العمل الجماعي وبناء فرق العمل</span></div>
-                    <div class="skill-item"><i class="fas fa-comments"></i><span>التواصل الفعّال وحل النزاعات</span></div>
-                    <div class="skill-item"><i class="fas fa-shield-alt"></i><span>تحمل ضغط العمل والانضباط الوظيفي</span></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Projects Section -->
-        <div id="projects" class="detail-view">
-            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
-            <div class="detail-content">
-                <h2><i class="fas fa-briefcase"></i> المشاريع والأعمال</h2>
-                <p>نماذج من المشاريع التي تم تنفيذها خلال فترة الدراسة أو التدريب.</p>
-                <div class="gallery-grid">
-                    <div class="gallery-item">
-                        <a href="https://drive.google.com/file/d/1JsLO-8ljfxYe2gBWm9hF3aulwiTnMQyH/view?usp=drivesdk" target="_blank">
-                            <button style="background: var(--primary); color: white; padding: 15px; border-radius: 10px; border: none; cursor: pointer; font-size: 1.2rem;">عرض مشروع إدارة المواهب</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Certificates Section -->
-        <div id="certificates" class="detail-view">
-            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
-            <div class="detail-content">
-                <h2><i class="fas fa-certificate"></i> الشهادات والدورات التدريبية</h2>
-                <p>الشهادات أو الدورات التدريبية التي حصلت عليها.</p>
-                 <div class="gallery-grid">
-                    <div class="gallery-item">
-                        <a href="https://i.postimg.cc/RVWH4Qr1/IMG-20251208-WA0011.jpg" target="_blank"><img src="https://i.postimg.cc/RVWH4Qr1/IMG-20251208-WA0011.jpg" alt="دورة تدريبية بعنوان اساسيات التسويق"></a>
-                    </div>
-                    <div class="gallery-item">
-                        <a href="https://i.postimg.cc/Znd4DqgN/IMG-20251208-WA0010.jpg" target="_blank"><img src="https://i.postimg.cc/Znd4DqgN/IMG-20251208-WA0010.jpg" alt="دورة تدريبية تحليل البيانات باستخدام Power BI"></a>
-                    </div>
-                    <div class="gallery-item">
-                        <a href="https://i.postimg.cc/FKw9bcCs/IMG-20251208-WA0009.jpg" target="_blank"><img src="https://i.postimg.cc/FKw9bcCs/IMG-20251208-WA0009.jpg" alt="شهادة اجتياز دورة مبادئ الذكاء الاصطناعي"></a>
-                    </div>
-                    <div class="gallery-item">
-                        <a href="https://i.postimg.cc/vT3khw8c/IMG-20251208-WA0008.jpg" target="_blank"><img src="https://i.postimg.cc/vT3khw8c/IMG-20251208-WA0008.jpg" alt="شهادة شكر وتقدير من لجنة الحج"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contact Section -->
-        <div id="contact" class="detail-view">
-            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
-            <div class="detail-content">
-                <h2><i class="fas fa-address-book"></i> معلومات التواصل</h2>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <a href="tel:+966500213173">+966 50 021 3173</a>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <a href="mailto:frtal667t@gmail.com">frtal667t@gmail.com</a>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fab fa-linkedin"></i>
-                        <a href="https://www.linkedin.com/in/feras-alasiri-3ab45638a?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank">حسابي على LinkedIn</a>
-                    </div>
+                
+                <!-- نتائج التحقق للحج -->
+                <div class="result-section" id="hajjResult">
+                    <!-- يمكنك إضافة محتوى مشابه لشهادة الحج هنا -->
                 </div>
             </div>
         </div>
     </div>
+    
+    <footer class="footer-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-right">
+                    <h5>للاستفسارات</h5>
+                    <p><i class="fas fa-phone"></i> 920002005</p>
+                    <p><i class="fas fa-envelope"></i> support@seha.sa</p>
+                </div>
+                <div class="col-md-6 text-left">
+                    <img src="https://vaccinecertificate.sehhaty.sa/Content/Images/sehanewlogo.png" style="height:50px;" alt="شعار صحة">
+                    <p>منصة صحة معتمدة من قبل وزارة الصحة © <span id="currentYear"></span></p>
+                    <a href="#" class="text-white">الشروط والأحكام</a> | 
+                    <a href="#" class="text-white">دليل الاستخدام</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <script>
-        const mainView = document.getElementById('main-view');
-        const detailViews = document.querySelectorAll('.detail-view');
-        const dataBoxes = document.querySelectorAll('.data-box');
+        // بيانات الشهادات المزيفة (يمكنك تعديلها كما تريد)
+        const fakeCertificates = {
+            "123456789012345": {
+                idNumber: "1122334455",
+                name: "ابوالعز محمد علي",
+                dob: "10/05/1990",
+                type: "شهادة تطعيم كوفيد-19",
+                status: "نشطة",
+                issueDate: "15/08/2023",
+                vaccines: [
+                    {type: "فايزر", dose: "الجرعة الأولى", date: "15/06/2022", provider: "مركز الرعاية الصحية الأولية - الرياض"},
+                    {type: "فايزر", dose: "الجرعة الثانية", date: "15/07/2022", provider: "مركز الرعاية الصحية الأولية - الرياض"},
+                    {type: "فايزر", dose: "الجرعة التنشيطية", date: "15/01/2023", provider: "مستشفى الملك فيصل التخصصي"}
+                ]
+            },
+            "987654321098765": {
+                idNumber: "5566778899",
+                name: "سارة عبدالله أحمد",
+                dob: "22/11/1985",
+                type: "شهادة تطعيم الحج",
+                status: "نشطة",
+                issueDate: "01/06/2023",
+                vaccines: [
+                    {type: "الحمى الشوكية", dose: "جرعة واحدة", date: "10/05/2023", provider: "مركز الحج الصحي - مكة"}
+                ]
+            }
+        };
 
-        function showMainView() {
-            mainView.classList.remove('hidden');
-            detailViews.forEach(view => view.classList.remove('active'));
+        // دالة التحقق من الشهادة
+        function verifyCertificate() {
+            const certNumber = document.getElementById('certificateNumber').value.trim();
+            const idNumber = document.getElementById('idNumber').value.trim();
+            
+            if (!certNumber || !idNumber) {
+                alert('الرجاء إدخال جميع البيانات المطلوبة');
+                return;
+            }
+            
+            if (fakeCertificates[certNumber] && fakeCertificates[certNumber].idNumber === idNumber) {
+                const certData = fakeCertificates[certNumber];
+                
+                // تعبئة البيانات
+                document.getElementById('certName').textContent = certData.name;
+                document.getElementById('certId').textContent = certData.idNumber;
+                document.getElementById('certDob').textContent = certData.dob;
+                document.getElementById('certType').textContent = certData.type;
+                document.getElementById('certStatus').textContent = certData.status;
+                document.getElementById('certIssueDate').textContent = certData.issueDate;
+                
+                // تعبئة جدول التطعيمات
+                let vaccinesHtml = '';
+                certData.vaccines.forEach(vaccine => {
+                    vaccinesHtml += `
+                        <tr>
+                            <td>${vaccine.type}</td>
+                            <td>${vaccine.dose}</td>
+                            <td>${vaccine.date}</td>
+                            <td>${vaccine.provider}</td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('vaccineDetails').innerHTML = vaccinesHtml;
+                
+                // إظهار النتائج
+                document.getElementById('certificateResult').style.display = 'block';
+            } else {
+                alert('لم يتم العثور على شهادة مطابقة للبيانات المدخلة');
+                document.getElementById('certificateResult').style.display = 'none';
+            }
         }
-        
-        function showDetailView(targetId) {
-            mainView.classList.add('hidden');
-            detailViews.forEach(view => {
-                if (view.id === targetId) {
-                    view.classList.add('active');
-                    view.scrollTop = 0; // Scroll to top on view change
-                } else {
-                    view.classList.remove('active');
-                }
-            });
+
+        // دالة تعديل البيانات
+        function editCertificate() {
+            const certName = document.getElementById('certName');
+            const certId = document.getElementById('certId');
+            
+            // جعل الحقول قابلة للتعديل
+            certName.contentEditable = true;
+            certId.contentEditable = true;
+            
+            // إضافة تأثير مرئي للحقول القابلة للتعديل
+            certName.style.border = "1px dashed #306DB5";
+            certName.style.padding = "5px";
+            certId.style.border = "1px dashed #306DB5";
+            certId.style.padding = "5px";
+            
+            alert('يمكنك الآن تعديل البيانات مباشرة في الصفحة');
         }
-        
-        dataBoxes.forEach(box => {
-            box.addEventListener('click', function() {
-                const targetId = this.getAttribute('data-target');
-                showDetailView(targetId);
-            });
-        });
-        
-        showMainView();
+
+        // دالة طباعة الشهادة
+        function printCertificate() {
+            window.print();
+        }
+
+        // دالة التحقق من شهادة الحج
+        function verifyHajjCertificate() {
+            alert('هذه الخدمة قيد التطوير');
+        }
+
+        // تعيين السنة الحالية في التذييل
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
