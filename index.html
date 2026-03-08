@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملف الإنجاز الإلكتروني - فراس محمد موسى العسيري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #007BFF; /* لون رئيسي جديد (أزرق) */
+            --secondary: #6C757D; /* لون ثانوي جديد (رمادي) */
+            --accent: #28a745;
+            --light: #f8f9fa; /* لون فاتح متناسق */
+            --dark: #212529;
+            --gray: #6c757d;
+            --border-radius: 15px; /* مربعات أنعم */
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            direction: rtl;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px; /* تعديل العرض */
+            background-color: white;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            height: 95vh;
+            position: relative;
+        }
+
+        /* Main View */
+        .main-view {
+            padding: 35px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+
+        .main-view.hidden {
+            transform: translateX(-100%);
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h1 {
+            font-size: 2.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .profile-info .title {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        .contact-badges {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .contact-badge {
+            background: var(--light);
+            padding: 10px 18px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.4s;
+            border: 1px solid #dee2e6;
+        }
+
+        .contact-badge:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-4px);
+        }
+        
+        .contact-badge i {
+            color: var(--primary);
+            transition: color 0.4s;
+        }
+
+        .contact-badge:hover i {
+            color: white;
+        }
+
+        /* Compact Data Grid */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* حجم أكبر قليلاً */
+            gap: 20px; /* مسافات أكبر */
+            flex-grow: 1;
+            padding-top: 15px;
+        }
+
+        .data-box {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px 18px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .data-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary);
+        }
+
+        .data-box i {
+            font-size: 2rem; /* أيقونة أكبر */
+            margin-bottom: 12px;
+            color: var(--primary);
+            transition: all 0.4s;
+        }
+        
+        .data-box:hover i {
+            transform: scale(1.15);
+        }
+
+        .data-box h3 {
+            font-size: 1.1rem; /* خط أكبر */
+            margin-bottom: 6px;
+        }
+
+        .data-box p {
+            color: var(--gray);
+            font-size: 0.8rem; /* خط أكبر قليلاً */
+            line-height: 1.5;
+        }
+
+        /* Detail Views */
+        .detail-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 45px;
+            background: white;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            overflow-y: auto;
+        }
+
+        .detail-view.active {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .back-button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-bottom: 35px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.4s;
+            box-shadow: 0 6px 18px rgba(0, 123, 255, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.4);
+        }
+
+        .detail-content h2 {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        
+        .detail-content h2 i {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .detail-content p {
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            line-height: 1.9;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 25px;
+        }
+
+        .skill-item {
+            background: var(--light);
+            padding: 18px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.4s;
+            border-left: 4px solid var(--primary);
+        }
+
+        .skill-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .skill-item i {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: transform 0.4s;
+            cursor: pointer;
+        }
+        
+        .gallery-item img:hover {
+            transform: scale(1.08);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 18px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            transition: transform 0.4s;
+        }
+
+        .contact-item:hover {
+            transform: translateX(12px);
+        }
+
+        .contact-item i {
+            width: 55px;
+            height: 55px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .contact-item a {
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.4s;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary);
+        }
+
+        .cv-image {
+            width: 100%;
+            max-width: 850px;
+            border-radius: 12px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            margin: 25px auto;
+            display: block;
+            border: 1px solid #dee2e6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .contact-badges {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                height: auto;
+                min-height: 95vh;
+            }
+            .main-view, .detail-view {
+                padding: 25px;
+            }
+            .data-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main View -->
+        <div id="main-view" class="main-view">
+            <div class="profile-header">
+                <div class="profile-info">
+                    <h1>فراس محمد موسى العسيري</h1>
+                    <p class="title">طالب دبلوم موارد بشرية – جامعة أم القرى</p>
+                    <div class="contact-badges">
+                        <a href="mailto:frtal667t@gmail.com" class="contact-badge">
+                            <i class="fas fa-envelope"></i> البريد الإلكتروني
+                        </a>
+                        <a href="tel:+966500213173" class="contact-badge">
+                            <i class="fas fa-phone"></i> رقم الهاتف
+                        </a>
+                        <a href="https://www.linkedin.com/in/feras-alasiri-3ab45638a?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="contact-badge">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="data-grid">
+                <div class="data-box" data-target="about">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>النبذة التعريفية</h3>
+                    <p>خبراتي وأهدافي المهنية</p>
+                </div>
+                <div class="data-box" data-target="cv">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>السيرة الذاتية</h3>
+                    <p>عرض السيرة الذاتية الكاملة</p>
+                </div>
+                <div class="data-box" data-target="skills">
+                    <i class="fas fa-cogs"></i>
+                    <h3>المهارات</h3>
+                    <p>مهاراتي الشخصية والعملية</p>
+                </div>
+                <div class="data-box" data-target="projects">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>المشاريع والأعمال</h3>
+                    <p>نماذج من أعمالي</p>
+                </div>
+                <div class="data-box" data-target="certificates">
+                    <i class="fas fa-certificate"></i>
+                    <h3>الشهادات والدورات</h3>
+                    <p>الدورات التدريبية التي حصلت عليها</p>
+                </div>
+                <div class="data-box" data-target="contact">
+                    <i class="fas fa-address-book"></i>
+                    <h3>معلومات التواصل</h3>
+                    <p>طرق التواصل معي</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detail Views -->
+        
+        <!-- About Section -->
+        <div id="about" class="detail-view">
+            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
+            <div class="detail-content">
+                <h2><i class="fas fa-user-tie"></i> نبذة تعريفية</h2>
+                <p>فراس محمد موسى العسيري، طالب تخصص الموارد البشرية، مهتم بالعمل في مجال شؤون الموظفين والعمل الجماعي، وأسعى لتطوير مهاراتي في تنظيم العلاقات العمالية وتعزيز بيئة عمل قائمة على التعاون والالتزام المهني. طالب بجامعة أم القرى تخصص إدارة موارد بشرية، مهتم بالعمل في شؤون الموظفين والعمل النقابي، وأسعى لاكتساب خبرة عملية وتطوير مهاراتي بما يخدم بيئة العمل ويعزز التعاون والانضباط الوظيفي. العمر: ٢٠ سنة، الحالة الاجتماعية: أعزب.</p>
+            </div>
+        </div>
+        
+        <!-- CV Section -->
+        <div id="cv" class="detail-view">
+            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
+            <div class="detail-content">
+                <h2><i class="fas fa-file-alt"></i> السيرة الذاتية (CV)</h2>
+                <p>يمكنك الاطلاع على سيرتي الذاتية من خلال الصورة أدناه.</p>
+                <a href="https://i.postimg.cc/hG1nHwpT/Screenshot-20251208-203025-740.png" target="_blank">
+                    <img src="https://i.postimg.cc/hG1nHwpT/Screenshot-20251208-203025-740.png" alt="السيرة الذاتية" class="cv-image">
+                </a>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div id="skills" class="detail-view">
+            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
+            <div class="detail-content">
+                <h2><i class="fas fa-cogs"></i> المهارات</h2>
+                <div class="skills-grid">
+                    <div class="skill-item"><i class="fas fa-users-cog"></i><span>إدارة شؤون الموظفين وسياسات الموارد البشرية</span></div>
+                    <div class="skill-item"><i class="fas fa-file-excel"></i><span>إعداد التقارير الإدارية والملفات الوظيفية</span></div>
+                    <div class="skill-item"><i class="fas fa-users"></i><span>العمل الجماعي وبناء فرق العمل</span></div>
+                    <div class="skill-item"><i class="fas fa-comments"></i><span>التواصل الفعّال وحل النزاعات</span></div>
+                    <div class="skill-item"><i class="fas fa-shield-alt"></i><span>تحمل ضغط العمل والانضباط الوظيفي</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div id="projects" class="detail-view">
+            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
+            <div class="detail-content">
+                <h2><i class="fas fa-briefcase"></i> المشاريع والأعمال</h2>
+                <p>نماذج من المشاريع التي تم تنفيذها خلال فترة الدراسة أو التدريب.</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <a href="https://drive.google.com/file/d/1JsLO-8ljfxYe2gBWm9hF3aulwiTnMQyH/view?usp=drivesdk" target="_blank">
+                            <button style="background: var(--primary); color: white; padding: 15px; border-radius: 10px; border: none; cursor: pointer; font-size: 1.2rem;">عرض مشروع إدارة المواهب</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificates Section -->
+        <div id="certificates" class="detail-view">
+            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
+            <div class="detail-content">
+                <h2><i class="fas fa-certificate"></i> الشهادات والدورات التدريبية</h2>
+                <p>الشهادات أو الدورات التدريبية التي حصلت عليها.</p>
+                 <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <a href="https://i.postimg.cc/RVWH4Qr1/IMG-20251208-WA0011.jpg" target="_blank"><img src="https://i.postimg.cc/RVWH4Qr1/IMG-20251208-WA0011.jpg" alt="دورة تدريبية بعنوان اساسيات التسويق"></a>
+                    </div>
+                    <div class="gallery-item">
+                        <a href="https://i.postimg.cc/Znd4DqgN/IMG-20251208-WA0010.jpg" target="_blank"><img src="https://i.postimg.cc/Znd4DqgN/IMG-20251208-WA0010.jpg" alt="دورة تدريبية تحليل البيانات باستخدام Power BI"></a>
+                    </div>
+                    <div class="gallery-item">
+                        <a href="https://i.postimg.cc/FKw9bcCs/IMG-20251208-WA0009.jpg" target="_blank"><img src="https://i.postimg.cc/FKw9bcCs/IMG-20251208-WA0009.jpg" alt="شهادة اجتياز دورة مبادئ الذكاء الاصطناعي"></a>
+                    </div>
+                    <div class="gallery-item">
+                        <a href="https://i.postimg.cc/vT3khw8c/IMG-20251208-WA0008.jpg" target="_blank"><img src="https://i.postimg.cc/vT3khw8c/IMG-20251208-WA0008.jpg" alt="شهادة شكر وتقدير من لجنة الحج"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact" class="detail-view">
+            <button class="back-button" onclick="showMainView()"><i class="fas fa-arrow-right"></i> العودة</button>
+            <div class="detail-content">
+                <h2><i class="fas fa-address-book"></i> معلومات التواصل</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:+966500213173">+966 50 021 3173</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:frtal667t@gmail.com">frtal667t@gmail.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-linkedin"></i>
+                        <a href="https://www.linkedin.com/in/feras-alasiri-3ab45638a?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank">حسابي على LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const mainView = document.getElementById('main-view');
+        const detailViews = document.querySelectorAll('.detail-view');
+        const dataBoxes = document.querySelectorAll('.data-box');
+
+        function showMainView() {
+            mainView.classList.remove('hidden');
+            detailViews.forEach(view => view.classList.remove('active'));
+        }
+        
+        function showDetailView(targetId) {
+            mainView.classList.add('hidden');
+            detailViews.forEach(view => {
+                if (view.id === targetId) {
+                    view.classList.add('active');
+                    view.scrollTop = 0; // Scroll to top on view change
+                } else {
+                    view.classList.remove('active');
+                }
+            });
+        }
+        
+        dataBoxes.forEach(box => {
+            box.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                showDetailView(targetId);
+            });
+        });
+        
+        showMainView();
+    </script>
+</body>
+</html>
